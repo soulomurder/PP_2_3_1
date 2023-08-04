@@ -34,7 +34,7 @@ public class AppConfig {
       LocalContainerEntityManagerFactoryBean emFactoryBean = new LocalContainerEntityManagerFactoryBean();
       emFactoryBean.setDataSource(dataSource);
       emFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-      emFactoryBean.setPackagesToScan("hiber.model"); // Замените на путь к вашим классам сущностей
+      emFactoryBean.setPackagesToScan("web.model");
 
       Properties jpaProperties = new Properties();
       jpaProperties.setProperty("hibernate.show_sql", "true");

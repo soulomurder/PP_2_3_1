@@ -5,8 +5,9 @@ import web.model.User;
 import java.util.List;
 
 public interface UserDao {
-   void add(User user);
+   void createUser(User user);
    List<User> listUsers();
    void editEmail(Long id, String NewEmail);
-   void drop(Long id);
+   void dropUser(Long id);
+   User getUserById(Long id);
 }
