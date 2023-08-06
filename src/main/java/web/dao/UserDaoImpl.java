@@ -19,16 +19,20 @@ public class UserDaoImpl implements UserDao {
 
    @PersistenceContext
    @Autowired
-   private EntityManager em;
+   private EntityManager entityManager;
 
    @Autowired
    private PlatformTransactionManager transactionManager;
+   /* рекомендуют, но не упоминают, что если так сделать, то будет ошибка
+   HTTP Status 500 – Internal Server Error
+   Type Exception Report
+   Message Servlet.init() для сервлета [dispatcher] выбросил исключение
+   Description The server encountered an unexpected condition that prevented it from fulfilling the request. */
 
-   @Transactional(readOnly = true)
    @Override
    @SuppressWarnings("unchecked")
    public List<User> listUsers() {
-      Query query = em.createQuery("from User", User.class);
+      Query query = entityManager.createQuery("from User", User.class);
       return (List<User>) query.getResultList();
    }
 
@@ -38,7 +42,7 @@ public class UserDaoImpl implements UserDao {
       TransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
       TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
       try {
-         em.persist(user);
+         entityManager.persist(user);
          transactionManager.commit(transactionStatus);
       } catch (Exception ex) {
          transactionManager.rollback(transactionStatus);
@@ -51,7 +55,7 @@ public class UserDaoImpl implements UserDao {
       TransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
       TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
       try {
-         em.find(User.class, id).setEmail(newEmail);
+         entityManager.find(User.class, id).setEmail(newEmail);
          transactionManager.commit(transactionStatus);
       } catch (Exception ex) {
          transactionManager.rollback(transactionStatus);
@@ -64,16 +68,15 @@ public class UserDaoImpl implements UserDao {
       TransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
       TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
       try {
-         em.remove(em.find(User.class, id));
+         entityManager.remove(entityManager.find(User.class, id));
          transactionManager.commit(transactionStatus);
       } catch (Exception ex) {
          transactionManager.rollback(transactionStatus);
       }
    }
 
-   @Transactional(readOnly = true)
    @Override
    public User getUserById(Long id) {
-      return em.find(User.class, id);
+      return entityManager.find(User.class, id);
    }
 }

@@ -10,7 +10,7 @@ public class MainApp {
       AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
       UserService userService = context.getBean(UserService.class);
 
-      userService.add(new User("maxov", "max", "gmail.com"));
+      userService.createUser(new User("maxov", "max", "gmail.com"));
       userService.editEmail(1L, "new_email@gmail.com");
 
       context.close();
